@@ -176,12 +176,40 @@
             android:visibility="invisible"
             />
 
+        <FrameLayout
+            android:id="@+id/headpicture_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/psw_tip"
+            android:layout_marginTop="6dp"
+            android:gravity="center">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="头像:"
+                android:textSize="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="left|center_vertical"
+                android:textColor="#333333"/>
+
+            <ImageView
+                android:id="@+id/headpicture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="80dp"
+                android:background="#d6d7d7"
+                android:src="@drawable/ic_baseline_add_24"/>
+        </FrameLayout>
+
 
         <Button
             android:id="@+id/regist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/password_layout_2"
+            android:layout_below="@id/headpicture_layout"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="立即注册"
