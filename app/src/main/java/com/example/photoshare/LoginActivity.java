@@ -1,5 +1,6 @@
 package com.example.photoshare;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,17 +18,46 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class LoginActivity extends AppCompatActivity {
+
+    EditText etAccount;
+    EditText etPassword;
+    private static int REQUEST_TO_REGIST = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode ==REQUEST_TO_REGIST &&resultCode ==RESULT_OK){
+            String account=data.getStringExtra("account");
+            etAccount.setText(account);
+            etPassword.setText("");
+
+
+        }
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Bmob.initialize(this, "e6736733aa1b7ebe0f8ffc79718d3773");
+
+        Log.d("LoginActivity","我回来啦！！");
+
         final ImageView ivPwdSwitch = findViewById(R.id.pwd_visibility);
-        EditText etPassword = findViewById(R.id.password);
-        EditText etAccount = findViewById(R.id.account);
+        etPassword = findViewById(R.id.password);
+        etAccount = findViewById(R.id.account);
         CheckBox cbRememberPwd = findViewById(R.id.checkBox);
         Button btLogin = findViewById(R.id.login);
         ImageView ivAccountClear = findViewById(R.id.account_clear);
@@ -93,22 +123,49 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                SharedPreferences.Editor editor = spFile.edit();
 
-                if (cbRememberPwd.isChecked()) {
-                    String password = etPassword.getText().toString();
-                    String account = etAccount.getText().toString();
+                if(etAccount==null||etAccount.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入账号！", Toast.LENGTH_SHORT).show();
+                }else if(etPassword==null||etPassword.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入密码！", Toast.LENGTH_SHORT).show();
+                }else{
 
-                    editor.putString(accountKey, account);
-                    editor.putString(passwordKey, password);
-                    editor.putBoolean(rememberPasswordKey, true);
-                    editor.apply();
-                } else {
-                    editor.remove(accountKey);
-                    editor.remove(passwordKey);
-                    editor.remove(rememberPasswordKey);
-                    editor.apply();
+                    User user = new User();
+                    user.setUsername(etAccount.getText().toString());
+                    user.setPassword(etPassword.getText().toString());
+                    user.login(new SaveListener<User>() {
+                        @Override
+                        public void done(User bmobUser, BmobException e) {
+                            if (e == null) {
+                                Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                startActivity(intent);
+
+                                SharedPreferences.Editor editor = spFile.edit();
+
+                                if (cbRememberPwd.isChecked()) {
+                                    String password = etPassword.getText().toString();
+                                    String account = etAccount.getText().toString();
+
+                                    editor.putString(accountKey, account);
+                                    editor.putString(passwordKey, password);
+                                    editor.putBoolean(rememberPasswordKey, true);
+                                    editor.apply();
+                                } else {
+                                    editor.remove(accountKey);
+                                    editor.remove(passwordKey);
+                                    editor.remove(rememberPasswordKey);
+                                    editor.apply();
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "登录失败，请检查用户名和密码是否正确", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }
+
+
             }
         });
 
@@ -144,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_TO_REGIST);
             }
         });
 
