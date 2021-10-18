@@ -14,12 +14,12 @@ import java.util.List;
 
 
 public class Fragment_1 extends Fragment {
-    private RecyclerView lvPicList;
-    private List<Pic> PicData;
-    private PicAdapter adapter;
-    private Context context = null;
-    private View homeview;
-    private View picview;
+//    private RecyclerView lvPicList;
+//    private List<Pic> PicData;
+//    private PicAdapter adapter;
+//    private Context context = null;
+//    private View homeview;
+//    private View picview;
 
 
     public Fragment_1() {

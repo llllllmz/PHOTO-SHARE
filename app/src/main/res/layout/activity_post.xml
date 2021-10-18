@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostActivity">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/picContent"
+        android:hint="哈哈哈"
+        android:maxLines="5"
+        android:gravity="top"/>
+
+    <ImageView
+        android:id="@+id/sharePicture"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_vertical"
+        android:layout_below="@id/picContent"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@id/picContent"
+        android:background="#d6d7d7"
+        android:src="@drawable/ic_baseline_add_24"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:id="@+id/bt_post"
+        android:text="分享"
+        android:layout_below="@id/sharePicture"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp" />
+
+
+
+
+
+
+</RelativeLayout>
+
