@@ -9,9 +9,10 @@ public class Pic {
     private int likes;
     private Boolean isLike;
     private ImageView head;
-    private String getUsername(){
+    String getUsername(){
         return username;
     }
-    private void setUsername(String username) { this.username = username; }
-    public getHead() { return head; }
+    public void setUsername(String username) { this.username = username; }
+    //public getHead() { return head; }
+
 }

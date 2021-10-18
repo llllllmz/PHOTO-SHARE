@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/drawable/divider.xml" value="0.1" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/drawable/head.xml" value="0.1" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/activity_home.xml" value="0.1" />
-        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/card_list.xml" value="0.264" />
-        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/fragment_1.xml" value="0.264" />
+        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/fragment_1.xml" value="0.36828644501278773" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/fragment_2.xml" value="0.264" />
+        <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/list_pic.xml" value="0.1" />
       </map>
     </option>
   </component>

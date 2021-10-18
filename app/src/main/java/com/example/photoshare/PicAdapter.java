@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -21,12 +24,32 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder>{
     private List<Pic> mPicList;
     private Context mContext;
     private String imgName;
+    private int img_id;
     private Dialog dialog;
     private  ImageView mImageView;
     private Map<String, Boolean> likeList = new HashMap<>();
     private int likes = 0;
     private Map<String, Boolean> share = new HashMap<>();
     private ViewHolder targetHolder;
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(img_id, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Pic pics = mPicList.get(position);
+        holder.username.setText(pics.getUsername());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mPicList.size();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         RoundedImageView PicImg; //图片
