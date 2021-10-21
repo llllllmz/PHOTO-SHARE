@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,7 +27,6 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
-import cn.bmob.v3.datatype.BmobFile;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -37,15 +35,17 @@ public class PostActivity extends AppCompatActivity {
     Button btPost;//发布按钮
 
     private static int RESULT_LOAD_IMAGE = 1;
+    private static String TAG = "PostActivity";
     String picturePath;//要分享图片的路径
-    BmobFile bmobFile;//要分享的图片
-    BmobFile headPicture;//头像
+    BmobFile pictureFile;//要分享的图片
+    BmobFile headpictureFile;//头像
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        setTitle("发布分享");
         Bmob.initialize(this, "e6736733aa1b7ebe0f8ffc79718d3773");
 
         etPicContent = findViewById(R.id.picContent);
@@ -75,14 +75,14 @@ public class PostActivity extends AppCompatActivity {
                 String picContent = etPicContent.getText().toString();
                 if(picContent.isEmpty()){
                     Toast.makeText(PostActivity.this, "请输入分享内容！", Toast.LENGTH_SHORT).show();
-                }else if(bmobFile==null){
+                }else if(pictureFile ==null){
                     Toast.makeText(PostActivity.this, "请选择图片！", Toast.LENGTH_SHORT).show();
                 }else{            //TODO
                     //获取当前登录用户的信息和要分享的图片及内容
                     User currentUser = BmobUser.getCurrentUser(User.class);
                     String nickname = currentUser.getNickname();
                     String username = currentUser.getUsername();
-                    headPicture = currentUser.getHeadpicture();
+                    headpictureFile = currentUser.getHeadpicture();
 
 
 
@@ -92,9 +92,9 @@ public class PostActivity extends AppCompatActivity {
                     shareItem.setNickname(nickname);
                     shareItem.setUsername(username);
                     shareItem.setPicContent(picContent);
-                    shareItem.setHeadPicture(headPicture);
-                    shareItem.setSharePicture(bmobFile);
-                    Log.d("user",nickname);
+                    shareItem.setHeadPicture(headpictureFile);
+                    shareItem.setSharePicture(pictureFile);
+                    Log.d(TAG,nickname);
 
                     shareItem.save(new SaveListener<String>() {
                         @Override
@@ -144,17 +144,17 @@ public class PostActivity extends AppCompatActivity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             picturePath = cursor.getString(columnIndex);
             cursor.close();
-            Log.d("photo111", "" + picturePath);
+            Log.d(TAG, "" + picturePath);
 //
             ivSharePicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
-            bmobFile = new BmobFile(new File(picturePath));
-            bmobFile.uploadblock(new UploadFileListener() {
+            pictureFile = new BmobFile(new File(picturePath));
+            pictureFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
                         //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                        Log.w("bbb", bmobFile.getFileUrl());
+                        Log.w("bbb", pictureFile.getFileUrl());
                         Toast.makeText(PostActivity.this, "图片上传成功!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(PostActivity.this, "图片上传失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();

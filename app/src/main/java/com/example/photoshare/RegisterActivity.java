@@ -1,7 +1,5 @@
 package com.example.photoshare;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -34,14 +32,14 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class RegisterActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
-
-    ImageView ivHeadpicture;
-    String headpicturePath;
+    private static String TAG = "RegisterActivity";
+    ImageView ivHeadPicture;
+    String headPicturePath;
     TextView tvNickname;
     TextView tvAccount;
     TextView tvPassword1;
     TextView tvPassword2;
-    BmobFile bmobFile;
+    BmobFile headPictureFile;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,19 +53,19 @@ public class RegisterActivity extends AppCompatActivity {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            headpicturePath = cursor.getString(columnIndex);
+            headPicturePath = cursor.getString(columnIndex);
             cursor.close();
-            Log.d("photo111", "" + headpicturePath);
+            Log.d(TAG, "" + headPicturePath);
 //
-            ivHeadpicture.setImageBitmap(BitmapFactory.decodeFile(headpicturePath));
+            ivHeadPicture.setImageBitmap(BitmapFactory.decodeFile(headPicturePath));
 
-            bmobFile = new BmobFile(new File(headpicturePath));
-            bmobFile.uploadblock(new UploadFileListener() {
+            headPictureFile = new BmobFile(new File(headPicturePath));
+            headPictureFile.uploadblock(new UploadFileListener() {
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
                         //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                        Log.w("bbb", bmobFile.getFileUrl());
+                        Log.w("bbb", headPictureFile.getFileUrl());
                         Toast.makeText(RegisterActivity.this, "头像上传成功!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(RegisterActivity.this, "头像上传失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -81,25 +79,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    selectHeadPicture();
-                } else {
-                    Toast.makeText(this, "你的权限不足！", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-        }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        setTitle("注册");
+        Bmob.initialize(this, "e6736733aa1b7ebe0f8ffc79718d3773");
 
         tvAccount = findViewById(R.id.account);
         ImageView ivAccountClear = findViewById(R.id.account_clear);
@@ -110,10 +98,10 @@ public class RegisterActivity extends AppCompatActivity {
         tvPassword2 = findViewById(R.id.password_2);
         ImageView ivPasswordClear2 = findViewById(R.id.password_clear_2);
         TextView tvPswTip = findViewById(R.id.psw_tip);
-        ivHeadpicture = findViewById(R.id.headpicture);
+        ivHeadPicture = findViewById(R.id.headpicture);
         Button btRegister = findViewById(R.id.regist);
 
-        Bmob.initialize(this, "e6736733aa1b7ebe0f8ffc79718d3773");
+
 
         tvAccount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -246,11 +234,11 @@ public class RegisterActivity extends AppCompatActivity {
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register(headpicturePath);
+                register(headPicturePath);
             }
         });
 
-        ivHeadpicture.setOnClickListener(new View.OnClickListener() {
+        ivHeadPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -275,6 +263,21 @@ public class RegisterActivity extends AppCompatActivity {
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    selectHeadPicture();
+                } else {
+                    Toast.makeText(this, "你的权限不足！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
 
     //上传图片到表中
     private void register(String imgpath) {
@@ -287,7 +290,7 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(RegisterActivity.this, "请输入密码！", Toast.LENGTH_SHORT).show();
         } else if (tvPassword2 == null || tvPassword2.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "请重复输入密码！", Toast.LENGTH_SHORT).show();
-        } else if (bmobFile == null) {
+        } else if (headPictureFile == null) {
             Toast.makeText(RegisterActivity.this, "请上传头像！", Toast.LENGTH_SHORT).show();
         } else if (!tvPassword1.getText().toString().equals(tvPassword2.getText().toString())) {
             Toast.makeText(RegisterActivity.this, "两次输入的密码不一致！", Toast.LENGTH_SHORT).show();
@@ -298,7 +301,7 @@ public class RegisterActivity extends AppCompatActivity {
             user.setUsername(tvAccount.getText().toString());
             user.setPassword(tvPassword1.getText().toString());
             user.setNickname(tvNickname.getText().toString());//当前的用户名
-            user.setHeadpicture(bmobFile);//该用户的头像图片
+            user.setHeadpicture(headPictureFile);//该用户的头像图片
             user.signUp(new SaveListener<User>() {
 
                 @Override

@@ -1,14 +1,15 @@
 package com.example.photoshare;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
 
-//跟类Pic一样
+//持久化类ShareItem：记录每条分享的信息
 public class ShareItem extends BmobObject {
     private String nickname;//昵称
     private String username;//账号
     private String picContent; //图片描述
-    private int likes;//点赞数
+    private Integer likes;//点赞数
     private BmobFile headPicture;//头像
     private BmobFile sharePicture;//分享图片
 
@@ -36,11 +37,11 @@ public class ShareItem extends BmobObject {
         this.picContent = picContent;
     }
 
-    public int getLikes() {
+    public Integer getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(Integer  likes) {
         this.likes = likes;
     }
 

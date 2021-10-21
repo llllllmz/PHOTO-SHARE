@@ -50,10 +50,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        setTitle("登录");
         Bmob.initialize(this, "e6736733aa1b7ebe0f8ffc79718d3773");
 
-        Log.d("LoginActivity","我回来啦！！");
+        Log.d("LoginActivity","onCreate()调用");
 
         final ImageView ivPwdSwitch = findViewById(R.id.pwd_visibility);
         etPassword = findViewById(R.id.password);
@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.remove(rememberPasswordKey);
                                     editor.apply();
                                 }
+                                finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "登录失败，请检查用户名和密码是否正确", Toast.LENGTH_SHORT).show();
                             }

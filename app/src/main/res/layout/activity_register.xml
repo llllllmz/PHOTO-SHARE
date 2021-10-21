@@ -39,6 +39,7 @@
                 android:layout_height="23dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="10dp"
+
                 android:background="@drawable/ic_baseline_clear_24"
                 android:visibility="invisible" />
 
@@ -201,6 +202,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="80dp"
                 android:background="#d6d7d7"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_add_24"/>
         </FrameLayout>
 

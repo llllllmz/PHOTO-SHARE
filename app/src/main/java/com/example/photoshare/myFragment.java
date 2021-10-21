@@ -1,48 +1,41 @@
 package com.example.photoshare;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.DownloadFileListener;
-import cn.bmob.v3.listener.FindListener;
+
 import com.bumptech.glide.Glide;
 
 
-public class Fragment_2 extends Fragment {
+public class myFragment extends Fragment {
 
 
     String username;//账号
     TextView tvNickname;//昵称
-    ImageView ivHeadpicture;//头像
+    ImageView ivHeadPicture;//头像
     TextView tvUsername;//账号
-    BmobFile headpicture;//头像文件
+    BmobFile headPicture;//头像文件
     String nickname;//昵称
-//    Button bt;
-//    String url;
-//    BmobFile icon;
-    Button btShare;
 
-    public Fragment_2() {
+    Button btShare;
+    RelativeLayout rlMyshare;
+    RelativeLayout rlExitLogin;
+    RelativeLayout rlAlterInfo;
+
+    public myFragment() {
         // Required empty public constructor
     }
 
@@ -54,52 +47,76 @@ public class Fragment_2 extends Fragment {
         User currentUser = BmobUser.getCurrentUser(User.class);
         nickname = currentUser.getNickname();
         username = currentUser.getUsername();
-        headpicture = currentUser.getHeadpicture();
+        headPicture = currentUser.getHeadpicture();
 
-//        headpicture.download(new DownloadFileListener() {
-//            @Override
-//            public void done(String s, BmobException e) {
-//                if(e != null) {
-////                    ivHeadpicture.setImageBitmap(BitmapFactory.decodeFile(s));
-//                    url=s;
-//                }
-//            }
 //
-//            @Override
-//            public void onProgress(Integer integer, long l) {
-//
-//            }
-//        });
-//        Glide.with(getContext())
-//                                            .load(s)
-//                                            .into(ivHeadpicture);
-        Log.d("TAG",headpicture.getFileUrl());
-        Log.d("TAG",headpicture.getUrl());
+        Log.d("myFragment", nickname);
+        Log.d("myFragment", headPicture.getUrl());
 
 
 
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        User currentUser = BmobUser.getCurrentUser(User.class);
+//        tvNickname.setText(currentUser.getNickname());
+//        tvUsername.setText(currentUser.getUsername());
+//        Glide.with(getContext()).load(currentUser.getHeadpicture().getUrl()).into(ivHeadPicture);
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_2, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my, container, false);
         tvNickname = rootView.findViewById(R.id.info_nickname);
         tvUsername = rootView.findViewById(R.id.info_username);
-        ivHeadpicture = rootView.findViewById(R.id.info_headpicture);
+        ivHeadPicture = rootView.findViewById(R.id.info_headpicture);
+        rlMyshare = rootView.findViewById(R.id.my_share);
+        rlExitLogin = rootView.findViewById(R.id.exit_login);
+        rlAlterInfo = rootView.findViewById(R.id.update_info);
+
         btShare = rootView.findViewById(R.id.bt_share);
 //        bt = rootView.findViewById(R.id.but);
 //        tvNickname.setText(" ");
         tvNickname.setText(nickname);
         tvUsername.setText(username);
-        Glide.with(getContext()).load(headpicture.getFileUrl()).into(ivHeadpicture);
+        Glide.with(getContext()).load(headPicture.getUrl()).into(ivHeadPicture);
 
 
         btShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        rlMyshare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyShareActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        rlExitLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        rlAlterInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AlterInfoActivity.class);
                 startActivity(intent);
             }
         });

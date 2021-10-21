@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RegisterActivity">
+
+    <RelativeLayout
+        android:id="@+id/alterInfo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center">
+
+        <FrameLayout
+            android:id="@+id/account_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:focusable="false"
+                android:maxLength="14"
+                android:paddingLeft="90dp"
+                android:paddingRight="60dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账号："
+                android:textSize="16dp"
+                android:textColor="#333333"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="left|center_vertical" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/nickname_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_layout"
+            android:layout_marginTop="6dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="10"
+                android:paddingLeft="90dp"
+                android:paddingRight="60dp"
+                android:hint="昵称"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称："
+                android:textSize="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="left|center_vertical"
+                android:textColor="#333333"/>
+
+
+        </FrameLayout>
+
+
+
+
+
+
+
+        <FrameLayout
+            android:id="@+id/headpicture_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nickname_layout"
+            android:layout_marginTop="6dp"
+            android:gravity="center">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="头像:"
+                android:textSize="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="left|center_vertical"
+                android:textColor="#333333"/>
+
+            <ImageView
+                android:id="@+id/headpicture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="80dp"
+                android:background="#d6d7d7"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_add_24"/>
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/bt_alter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/headpicture_layout"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@android:color/white"
+            android:textSize="24dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

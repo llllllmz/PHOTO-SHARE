@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -17,11 +16,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mTab1;
     private LinearLayout mTab2;
 
-    //声明四个Tab的ImageButton
+    //声明两个Tab的ImageButton
     private ImageButton mImg1;
     private ImageButton mImg2;
 
-    //声明四个Tab分别对应的Fragment
+    //声明两个Tab分别对应的Fragment
     private Fragment mFrag1;
     private Fragment mFrag2;
 
@@ -31,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        setTitle("图片分享");
         init();
-
-
+        selectTab(1);
     }
 
     private void init() {
@@ -61,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void resetImgs() {
-        mImg1.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        mImg2.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        mImg1.setImageResource(R.drawable.ic_baseline_directions_bike_24);
+        mImg2.setImageResource(R.drawable.ic_baseline_account_circle_24);
     }
 
 
@@ -78,10 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //当选中点击的是第一页的Tab时
             case 1:
                 //设置第一页的ImageButton为绿色
-                mImg1.setBackgroundColor(Color.parseColor("#ff8ced"));
+                mImg1.setImageResource(R.drawable.ic_baseline_directions_bike_24_color);
                 //如果第一页对应的Fragment没有实例化，则进行实例化，并显示出来
                 if (mFrag1 == null) {
-                    mFrag1 = new Fragment_1();
+                    mFrag1 = new shareFragment();
                     transaction.add(R.id.fragment, mFrag1);
                 } else {
                     //如果第一页对应的Fragment已经实例化，则直接显示出来
@@ -89,9 +88,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
-                mImg2.setBackgroundColor(Color.parseColor("#ff8ced"));
+
+                mImg2.setImageResource(R.drawable.ic_baseline_account_circle_24_color);
                 if (mFrag2 == null) {
-                    mFrag2 = new Fragment_2();
+                    mFrag2 = new myFragment();
                     transaction.add(R.id.fragment, mFrag2);
                 } else {
                     transaction.show(mFrag2);
