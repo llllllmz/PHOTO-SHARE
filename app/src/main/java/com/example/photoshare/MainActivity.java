@@ -11,6 +11,8 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout mTab1;
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //设置第一页的ImageButton为绿色
                 mImg1.setImageResource(R.drawable.ic_baseline_directions_bike_24_color);
                 //如果第一页对应的Fragment没有实例化，则进行实例化，并显示出来
-                if (mFrag1 == null) {
+                if (mFrag1 == null ||mFrag1==getVisibleFragment()) {
                     mFrag1 = new shareFragment();
                     transaction.add(R.id.fragment, mFrag1);
                 } else {
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
 
                 mImg2.setImageResource(R.drawable.ic_baseline_account_circle_24_color);
-                if (mFrag2 == null) {
+                if (mFrag2 == null|| mFrag1==getVisibleFragment()) {
                     mFrag2 = new myFragment();
                     transaction.add(R.id.fragment, mFrag2);
                 } else {
@@ -111,6 +113,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             transaction.hide(mFrag2);
         }
 
+    }
+
+    //获取当前显示的Fragment
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for(Fragment fragment : fragments){
+            if(fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
     }
 
 

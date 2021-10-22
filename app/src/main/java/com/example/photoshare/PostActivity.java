@@ -94,6 +94,7 @@ public class PostActivity extends AppCompatActivity {
                     shareItem.setPicContent(picContent);
                     shareItem.setHeadPicture(headpictureFile);
                     shareItem.setSharePicture(pictureFile);
+                    shareItem.setLikes(0);
                     Log.d(TAG,nickname);
 
                     shareItem.save(new SaveListener<String>() {
@@ -101,8 +102,7 @@ public class PostActivity extends AppCompatActivity {
                         public void done(String s, BmobException e) {
                             if(e==null){
                                 Toast.makeText(PostActivity.this, "分享成功!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                finish();
                             }else{
                                 Toast.makeText(PostActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
                             }
