@@ -80,8 +80,8 @@ public class PostActivity extends AppCompatActivity {
                 }else{            //TODO
                     //获取当前登录用户的信息和要分享的图片及内容
                     User currentUser = BmobUser.getCurrentUser(User.class);
-                    String nickname = currentUser.getNickname();
-                    String username = currentUser.getUsername();
+//                    String nickname = currentUser.getNickname();
+//                    String username = currentUser.getUsername();
                     headpictureFile = currentUser.getHeadpicture();
 
 
@@ -89,13 +89,14 @@ public class PostActivity extends AppCompatActivity {
 
 //                BmobFile headpicture = currentUser.getHeadpicture();
                     ShareItem shareItem = new ShareItem();
-                    shareItem.setNickname(nickname);
-                    shareItem.setUsername(username);
+                    shareItem.setUser(currentUser);
+//                    shareItem.setNickname(nickname);
+//                    shareItem.setUsername(username);
                     shareItem.setPicContent(picContent);
-                    shareItem.setHeadPicture(headpictureFile);
+//                    shareItem.setHeadPicture(headpictureFile);
                     shareItem.setSharePicture(pictureFile);
                     shareItem.setLikes(0);
-                    Log.d(TAG,nickname);
+//                    Log.d(TAG,nickname);
 
                     shareItem.save(new SaveListener<String>() {
                         @Override

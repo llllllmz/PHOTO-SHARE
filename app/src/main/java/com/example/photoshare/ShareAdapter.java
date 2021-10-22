@@ -1,15 +1,7 @@
 package com.example.photoshare;
 
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 //适配器ShareAdapter
@@ -66,28 +50,58 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                 vh.tvLikes = view.findViewById(R.id.tv_likes);
                 vh.tvDate = view.findViewById(R.id.tv_publish_date);
                 vh.ivSave = view.findViewById(R.id.iv_save);
+                vh.ivShare = view.findViewById(R.id.iv_share);
+                vh.ivLikes = view.findViewById(R.id.iv_like);
                 view.setTag(vh);
             } else {
                 view = convertView;
                 vh = (ViewHolder) view.getTag();
             }
 
-            vh.tvNickname.setText(share.getNickname());
+            User user = share.getUser();
+            Log.d("shareAdapter",user.getNickname()+","+user.getHeadpicture());
+            vh.tvNickname.setText(user.getNickname());
             vh.tvContent.setText(share.getPicContent());
             vh.tvLikes.setText(share.getLikes().toString());
             vh.tvDate.setText(share.getCreatedAt());
-            Glide.with(mContext).load(share.getHeadPicture().getUrl())
+            Glide.with(mContext).load(user.getHeadpicture().getUrl())
                     .into(vh.ivHead);
             Glide.with(mContext).load(share.getSharePicture().getUrl())
                     .into(vh.ivImage);
 
+            vh.ivLikes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO 点赞
+                    Log.d("shareAdapter","点赞："+share.toString());
+                }
+            });
 
             vh.ivSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                 //TODO 下载图片资源
+                    Log.d("shareAdapter","下载："+share.getSharePicture().getUrl());
                 }
             });
+
+            vh.ivShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO 分享图片     getUrl()和getFileUrl()结果一样
+                    Log.d("shareAdapter","分享："+share.getSharePicture().getFileUrl());
+                }
+            });
+
+            vh.ivImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO 查看大图片
+                    Log.d("shareAdapter","查看大图："+share.getSharePicture().getFileUrl());
+                }
+            });
+
+
 
 
 
@@ -97,13 +111,16 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
         }
 
         class ViewHolder {
+
             TextView tvNickname;
             TextView tvContent;
             ImageView ivHead;
             ImageView ivImage;
             TextView tvLikes;
+            ImageView ivLikes;
             TextView tvDate;
             ImageView ivSave;
+            ImageView ivShare;
 
         }
 

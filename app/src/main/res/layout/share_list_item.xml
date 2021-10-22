@@ -114,18 +114,7 @@ app:cardCornerRadius="8dp">
         android:src="@drawable/ic_baseline_thumb_up_24" />
 
     <!--分享数和图标-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_shares"
-        style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_below="@id/iv_image"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="8dp"
-        android:layout_toRightOf="@id/iv_share"
-        android:text="0"
-        android:textSize="22sp" />
+
 
     <ImageView
         android:layout_width="30dp"

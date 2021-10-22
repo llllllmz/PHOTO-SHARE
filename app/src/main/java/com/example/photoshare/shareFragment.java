@@ -46,13 +46,14 @@ public class shareFragment extends Fragment {
         data = new ArrayList<ShareItem>();
         BmobQuery<ShareItem> query = new BmobQuery<ShareItem>();
         query.order("-createdAt");
+        query.include("user");
         query.findObjects(new FindListener<ShareItem>() {
             @Override
             public void done(List<ShareItem> list, BmobException e) {
                 if (e == null) {
-                    for (ShareItem ad : list) {
-                        data.add(ad);
-                        Log.d("shareFragment",""+ad);
+                    for (ShareItem ll : list) {
+                        data.add(ll);
+                        Log.d("shareFragment",""+ll);
                     }
                     if(shareAdapter!=null){
                         shareAdapter.notifyDataSetChanged();
