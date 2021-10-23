@@ -4,13 +4,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
+
+import androidx.appcompat.app.ActionBar;
 
 public class DialogImage extends Dialog {
     private ImageView picture;
@@ -28,29 +34,51 @@ public class DialogImage extends Dialog {
     }
 
     public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_window, null);
-        picture = (ImageView)view.findViewById(R.id.dialog_window_image);
+        picture = view.findViewById(R.id.dialog_window_image);
         picture.setImageBitmap(btm);
 
+//        WindowManager wm = getWindow().getWindowManager();
+//        Display display = wm.getDefaultDisplay();
+//
+//        ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(display.getWidth(),display.getHeight());
+
         setContentView(view);
-        super.onCreate(savedInstanceState);
+//        getWindow().setLayout((ViewGroup.LayoutParams.MATCH_PARENT), ViewGroup.LayoutParams.MATCH_PARENT);
+
     }
 
     //窗口显示
     public void windowDeploy(int x, int y){
         window = getWindow();
+        window.getDecorView().setPadding(0,0,0,0);
         window.setWindowAnimations(R.style.windowAnimation); //窗口弹出动画
-        window.setBackgroundDrawableResource(R.color.black);  //背景为黑色
-        WindowManager.LayoutParams wml = window.getAttributes();
 
+        WindowManager.LayoutParams wml = window.getAttributes();
+        //x,y为窗口显示位置
         wml.x = x;
         wml.y = y;
+
+        wml.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wml.height = WindowManager.LayoutParams.MATCH_PARENT;
+
         window.setAttributes(wml);
+        window.getDecorView().setBackgroundColor(Color.BLACK);
+        
     }
 
+    @Override
     public void show(){
-        setCanceledOnTouchOutside(true); //点击窗口以外的地方会取消窗口
         super.show();
+        setCanceledOnTouchOutside(true);
+//        Window win = getWindow();
+//        window.getDecorView().setPadding(0,0,0,0);
+//        WindowManager.LayoutParams layoutParams = win.getAttributes();
+//        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//        win.setAttributes(layoutParams);
+
     }
 
     public void dismiss(){

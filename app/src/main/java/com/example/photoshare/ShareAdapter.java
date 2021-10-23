@@ -88,6 +88,9 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
         if (share.getLikeState()) {
             vh.ivLikes.setImageResource(R.drawable.ic_baseline_thumb_up_24_color);
         }
+        else{
+            vh.ivLikes.setImageResource(R.drawable.ic_baseline_thumb_up_24);
+        }
         vh.tvDate.setText(share.getCreatedAt());
         Glide.with(mContext).load(user.getHeadpicture().getUrl())
                 .into(vh.ivHead);
@@ -204,7 +207,8 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                             vh.ivImage.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    DialogImage dialogImage = new DialogImage(getContext(),0,0,b);
+                                    vh.ivImage.setDrawingCacheEnabled(true);
+                                    DialogImage dialogImage = new DialogImage(getContext(),0,-300,b);
                                     dialogImage.show();
                                 }
                             });
