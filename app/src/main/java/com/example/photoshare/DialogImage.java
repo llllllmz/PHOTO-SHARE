@@ -19,7 +19,7 @@ import android.widget.ZoomControls;
 import androidx.appcompat.app.ActionBar;
 
 public class DialogImage extends Dialog {
-    private ImageView picture;
+    public ImageView picture;
     private Bitmap btm;
     private Window window = null;
 
@@ -65,19 +65,12 @@ public class DialogImage extends Dialog {
 
         window.setAttributes(wml);
         window.getDecorView().setBackgroundColor(Color.BLACK);
-        
+
     }
 
     @Override
     public void show(){
         super.show();
-        setCanceledOnTouchOutside(true);
-//        Window win = getWindow();
-//        window.getDecorView().setPadding(0,0,0,0);
-//        WindowManager.LayoutParams layoutParams = win.getAttributes();
-//        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-//        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//        win.setAttributes(layoutParams);
 
     }
 

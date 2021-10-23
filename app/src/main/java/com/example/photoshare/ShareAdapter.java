@@ -1,6 +1,7 @@
 package com.example.photoshare;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,9 +209,15 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                             vh.ivImage.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    vh.ivImage.setDrawingCacheEnabled(true);
                                     DialogImage dialogImage = new DialogImage(getContext(),0,-300,b);
                                     dialogImage.show();
+                                    dialogImage.picture.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogImage.dismiss();
+                                            dialogImage.cancel();
+                                        }
+                                    });
                                 }
                             });
                         } catch (ExecutionException e) {
