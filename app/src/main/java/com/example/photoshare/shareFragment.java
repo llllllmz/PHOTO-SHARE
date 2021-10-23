@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -37,12 +39,12 @@ public class shareFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkNeedPermissions();
-        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_share,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_share, container, false);
         data = new ArrayList<ShareItem>();
         BmobQuery<ShareItem> query = new BmobQuery<ShareItem>();
         query.order("-createdAt");
@@ -52,10 +54,36 @@ public class shareFragment extends Fragment {
             public void done(List<ShareItem> list, BmobException e) {
                 if (e == null) {
                     for (ShareItem ll : list) {
+
+                        Log.d("shareFragment", "" + ll);
+
+                        BmobQuery<User> query = new BmobQuery<User>();
+                        query.addWhereRelatedTo("likesUser", new BmobPointer(ll));
+                        query.findObjects(new FindListener<User>() {
+                            @Override
+                            public void done(List<User> list, BmobException e) {
+
+                                if (e == null) {
+                                    ll.setLikes(list.size());
+                                    ll.setLikeState(false);
+                                    for (User u : list) {
+                                        if (u.getObjectId().equals(BmobUser.getCurrentUser(User.class).getObjectId())) {
+                                            ll.setLikeState(true);
+                                            break;
+                                        }
+                                    }
+                                    shareAdapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(getContext(), "失败", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                        });
                         data.add(ll);
-                        Log.d("shareFragment",""+ll);
+
                     }
-                    if(shareAdapter!=null){
+                    if (shareAdapter != null) {
                         shareAdapter.notifyDataSetChanged();
                     }
 
@@ -77,7 +105,7 @@ public class shareFragment extends Fragment {
     }
 
 
-    private void checkNeedPermissions(){
+    private void checkNeedPermissions() {
         //6.0以上需要动态申请权限
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED

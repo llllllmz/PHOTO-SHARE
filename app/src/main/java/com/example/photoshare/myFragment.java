@@ -50,8 +50,8 @@ public class myFragment extends Fragment {
         headPicture = currentUser.getHeadpicture();
 
 //
-        Log.d("myFragment", nickname);
-        Log.d("myFragment", headPicture.getUrl());
+//        Log.d("myFragment", nickname);
+//        Log.d("myFragment", headPicture.getUrl());
 
 
 
@@ -109,6 +109,7 @@ public class myFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                BmobUser.logOut();
                 getActivity().finish();
             }
         });

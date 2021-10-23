@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
 
                 mImg2.setImageResource(R.drawable.ic_baseline_account_circle_24_color);
-                if (mFrag2 == null) {
+                if (mFrag2 == null||mFrag2==getVisibleFragment()) {
                     mFrag2 = new myFragment();
                     transaction.add(R.id.fragment, mFrag2);
                 } else {

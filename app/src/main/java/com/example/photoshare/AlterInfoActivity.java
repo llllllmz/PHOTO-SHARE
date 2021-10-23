@@ -19,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.File;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FetchUserInfoListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -71,22 +74,37 @@ public class AlterInfoActivity extends AppCompatActivity {
         btAlter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User user = new User();
+                user.setObjectId(currentUser.getObjectId());
                 if (tvNickname.getText().toString().isEmpty()) {
                     Toast.makeText(AlterInfoActivity.this, "昵称为空！", Toast.LENGTH_SHORT).show();
                 } else {
-                    currentUser.setNickname(tvNickname.getText().toString());
+                    user.setNickname(tvNickname.getText().toString());
                     if (headPictureFile != null) {
-                        currentUser.setHeadpicture(headPictureFile);
+                        user.setHeadpicture(headPictureFile);
                     }
-                    currentUser.update(new UpdateListener() {
+                    user.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             Toast.makeText(AlterInfoActivity.this, "修改成功！", Toast.LENGTH_SHORT).show();
 //                            Intent intent = new Intent(AlterInfoActivity.this, MainActivity.class);
 //                            startActivity(intent);
+
+                            BmobUser.fetchUserInfo(new FetchUserInfoListener<User>() {
+                                @Override
+                                public void done(User user, BmobException e) {
+                                    if (e == null) {
+                                        final User bUser = BmobUser.getCurrentUser(User.class);
+                                        Log.d("AlterInfoActivity",bUser.getNickname());
+                                    } else {
+                                        Log.e("AlterInfoActivity",e.getMessage());
+                                    }
+                                }
+                            });
                             finish();
                         }
                     });
+
                 }
 
             }

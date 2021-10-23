@@ -11,10 +11,11 @@
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/fragment_1.xml" value="0.36828644501278773" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/fragment_2.xml" value="0.264" />
         <entry key="..\:/factory/PHOTO-SHARE/app/src/main/res/layout/list_pic.xml" value="0.1" />
+        <entry key="..\:/factory/PHOTOSHARE/app/src/main/res/layout/dialog_window.xml" value="0.17604166666666668" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

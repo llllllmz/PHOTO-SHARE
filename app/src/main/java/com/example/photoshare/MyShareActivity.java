@@ -11,6 +11,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -19,6 +20,7 @@ public class MyShareActivity extends AppCompatActivity {
     private static String TAG = "MyShareActivity";
     ShareAdapter shareAdapter;
     List<ShareItem> data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,7 @@ public class MyShareActivity extends AppCompatActivity {
         data = new ArrayList<ShareItem>();
         BmobQuery<ShareItem> query = new BmobQuery<ShareItem>();
         query.order("-createdAt");
-        query.addWhereEqualTo("user",BmobUser.getCurrentUser(User.class));
+        query.addWhereEqualTo("user", BmobUser.getCurrentUser(User.class));
         query.include("user");
         query.findObjects(new FindListener<ShareItem>() {
             @Override
@@ -41,11 +43,35 @@ public class MyShareActivity extends AppCompatActivity {
 //                        }
 //
 //                    }
-                    for(ShareItem ll :list){
+                    for (ShareItem ll : list) {
+                        BmobQuery<User> query = new BmobQuery<User>();
+                        query.addWhereRelatedTo("likesUser", new BmobPointer(ll));
+                        query.findObjects(new FindListener<User>() {
+                            @Override
+                            public void done(List<User> list, BmobException e) {
+
+                                if (e == null) {
+                                    ll.setLikes(list.size());
+                                    ll.setLikeState(false);
+                                    for (User u : list) {
+                                        if (u.getObjectId().equals(BmobUser.getCurrentUser(User.class).getObjectId())) {
+                                            ll.setLikeState(true);
+                                            break;
+                                        }
+                                    }
+                                    shareAdapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(MyShareActivity.this, "失败", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                        });
                         data.add(ll);
                     }
-                    shareAdapter.notifyDataSetChanged();
-
+                    if (shareAdapter != null) {
+                        shareAdapter.notifyDataSetChanged();
+                    }
 
                 } else {
                     Toast.makeText(MyShareActivity.this, "获取失败：" + e.getMessage(), Toast.LENGTH_LONG).show();
