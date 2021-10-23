@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -118,9 +119,9 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                                 share.setLikes(share.getLikes()-1);
                                 vh.tvLikes.setText(share.getLikes().toString());
                                 share.setLikeState(false);
-                                Toast.makeText(getContext(), "取消赞", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "取消赞", Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(getContext(), "操作失败", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "操作失败", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -138,9 +139,9 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                                 share.setLikeState(true);
                                 share.setLikes(share.getLikes()+1);
                                 vh.tvLikes.setText(share.getLikes().toString());
-                                Toast.makeText(getContext(), "赞", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "赞", Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(getContext(), "操作失败", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "操作失败", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -167,7 +168,7 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
                             vh.ivImage.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getContext(), "图片像素:" + b.getWidth() + "x" + b.getHeight() + ",开始微信分享图片或者网页链接", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getContext(), "图片像素:" + b.getWidth() + "x" + b.getHeight() , Toast.LENGTH_SHORT).show();
                                     saveImageToGallery(b);
                                 }
                             });
@@ -187,6 +188,38 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
             public void onClick(View v) {
                 //TODO 分享图片     getUrl()和getFileUrl()结果一样
                 Log.d("shareAdapter", "分享：" + share.getSharePicture().getFileUrl());
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final Bitmap b = Glide.with(getContext())
+                                    .asBitmap()
+                                    .load( share.getSharePicture().getFileUrl())
+                                    .submit()
+                                    .get();
+
+                            vh.ivImage.post(new Runnable() {
+                                @Override
+                                public void run() {
+//                                    Toast.makeText(getContext(), "图片像素:" + b.getWidth() + "x" + b.getHeight(), Toast.LENGTH_SHORT).show();
+                                    Uri uri =  Uri.parse(MediaStore.Images.Media.insertImage(mContext.getContentResolver(), b, null,null));
+                                    Intent intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setType("image/png");
+                                    intent.putExtra(Intent.EXTRA_STREAM,uri);
+                                    mContext.startActivity(Intent.createChooser(intent,"图片分享"));
+                                }
+                            });
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+
+
 
             }
         });
@@ -256,11 +289,12 @@ public class ShareAdapter extends ArrayAdapter<ShareItem> {
     }
 
 //        //Bitmap转换本地为文件
-public void saveImageToGallery(Bitmap bmp) {
+public Uri saveImageToGallery(Bitmap bmp) {
     if (bmp==null){
         Log.e("TAG","bitmap---为空");
-        return ;
+        return null;
     }
+    Uri uri = null;
     String galleryPath= Environment.getExternalStorageDirectory()
             + File.separator + Environment.DIRECTORY_DCIM
             +File.separator+"Camera"+File.separator;
@@ -274,7 +308,7 @@ public void saveImageToGallery(Bitmap bmp) {
         fos.flush();
         fos.close();
         //保存图片后发送广播通知更新数据库
-        Uri uri = Uri.fromFile(file);
+        uri = Uri.fromFile(file);
         mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
         if (isSuccess) {
             Log.e("TAG","图片保存成功 保存在:" + file.getPath());
@@ -288,6 +322,7 @@ public void saveImageToGallery(Bitmap bmp) {
         Toast.makeText(getContext(), "保存图片找不到文件夹", Toast.LENGTH_SHORT).show();
         e.printStackTrace();
     }
+    return uri;
 }
 
 
